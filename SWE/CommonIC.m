@@ -18,10 +18,10 @@ function [h0,u0] = CommonIC(x,ICcase)
             h0 = 1+0.5*RectangularPulse(xmid-0.1,xmid+0.1,x);
             u0 = zeros(size(x));
         case 4 % Riemann profile in height
-            h0 = 2*(x<xmid)+1*(x>=xmid);
+            h0 = 2*(x<xmid)+0.5*(x>=xmid);
             u0 = zeros(size(x));
         case 5 % Riemann profile in height (opposite to IC:4)
-            h0 = 1*(x<xmid)+2*(x>=xmid);
+            h0 = 0.5*(x<xmid)+2*(x>=xmid);
             u0 = zeros(size(x));
         case 6 % Riemann profile in velocity
             h0 = ones(size(x));

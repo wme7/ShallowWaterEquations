@@ -27,7 +27,7 @@ global g
 CFL     = 0.5;	% CFL number
 tFinal	= 0.1;	% Final time
 nE      = 200;  % Number of cells/Elements
-flowIC  = 07;	% see details in CommonIC.m
+flowIC  = 04;	% see details in CommonIC.m
 topoIC  = 00;   % see details in TopographiIC.m
 limiter ='MC';	% MC, MM, VA.
 fluxMth ='HLL';	% LF, RUS, HLL.
@@ -102,10 +102,14 @@ end
 %% Final plot
 h=q(1,:); u=q(2,:)./q(1,:);
 if flowIC >= 4 && flowIC <= 8 && topoIC == 0
-    s1=subplot(2,1,1); plot(xc,h0,'--k',xe,he,'-r',xc,h(2:nx-1),'or',xc,b(2:nx-1),'-k');
-    s2=subplot(2,1,2); plot(xc,u0,'--k',xe,ue,'-b',xc,u(2:nx-1),'ob');
+    s1=subplot(2,1,1); plot(xc,h0,'--k',xe,he,'-k',xc,h(2:nx-1),'or',xc,b(2:nx-1),'-k'); 
+    xlabel('x [m]'); ylabel('h [m]');
+    s2=subplot(2,1,2); plot(xc,u0,'--k',xe,ue,'-k',xc,u(2:nx-1),'ob');
+    xlabel('x [m]'); ylabel('u [m/s]');
 else
-    s1=subplot(2,1,1); plot(xc,h0,'--k',xe,h(2:nx-1),'or',xc,b(2:nx-1),'-k');
-    s2=subplot(2,1,2); plot(xc,u0,'--k',xe,u(2:nx-1),'ob');
+    s1=subplot(2,1,1); plot(xc,h0,'--k',xc,h(2:nx-1),'or',xc,b(2:nx-1),'-k');
+    xlabel('x [m]'); ylabel('h [m]');
+    s2=subplot(2,1,2); plot(xc,u0,'--k',xc,u(2:nx-1),'ob');
+    xlabel('x [m]'); ylabel('u [m/s]');
 end
-title(s1,['MUSCL-',fluxMth,'-',limiter,' SWE Solver']);
+title(s1,['SWE Solver: MUSCL-',fluxMth,', t=',num2str(t),'[s]']);
