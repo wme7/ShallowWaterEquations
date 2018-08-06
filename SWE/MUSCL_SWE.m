@@ -19,7 +19,7 @@
 % 1. This snipet exemplifies the implementation of a MUSCL scheme to solve
 %    the conservative formulation of the SWE and numerical flux
 %    approximations such as the Lax Friedrichs (LF) and the HLL flux.
-% 2. In this snipet no topolography profile is needed.
+% 2. In this snipet no topography profile is needed.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear; %close all; clc;

@@ -3,7 +3,7 @@
 %                [i.e. the shallow water equations (SWE)]
 %                      with a 2nd-order MUSCL scheme
 %
-%                   dq/dt + df(q)/dx = 0, for x in [a,b] 
+%                   dq/dt + df(q)/dx = F(q), for x in [a,b] 
 %
 %           coded by Manuel A. Diaz, manuel.ade'at'gmail.com 
 %            Institute of Applied Mechanics, NTU, 2015.11.20
