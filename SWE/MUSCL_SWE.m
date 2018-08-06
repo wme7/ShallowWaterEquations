@@ -12,6 +12,8 @@
 % Refs: 
 % [1] Toro, Eleuterio F., and Eleuterio Toro. Shock-capturing methods for
 %     free-surface shallow flows. New York: John Wiley, 2001. pp:128.  
+% [2] Han, Ee, and Gerald Warnecke. "The exact Riemann solutions to
+%     Shallow-water equations." Q. Appl. Math 72.3 (2014): 407-453. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Notes: 
 % 1. This snipet exemplifies the implementation of a MUSCL scheme to solve
