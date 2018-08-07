@@ -30,7 +30,7 @@ fluxMth ='RUS';	% LF, RUS, HLL.
 plot_fig= true;
 
 % Gravity
-g = 9.81; % [m/s]
+g = 9.81; % [m/s^2]
 
 % Discretize spatial domain
 a=-1; b=1; dx=(b-a)/nE; nx=nE+1; xc=linspace(a,b,nx);
