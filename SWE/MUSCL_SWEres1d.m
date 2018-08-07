@@ -151,8 +151,8 @@ function Rusanov = RUSflux(qL,qR)
     
     % Rusanov numerical flux
     %smax = max([abs(uL+sqrt(g*hL)),abs(uL-sqrt(g*hL)),... 
-    %            abs(uR+sqrt(g*hR)),abs(uR-sqrt(g*hR))]); %David approach
-	smax = max([abs(uL)+sqrt(g*hL),abs(uR)+sqrt(g*hR)]);
+    %            abs(uR+sqrt(g*hR)),abs(uR-sqrt(g*hR))]); %Davis approach
+	smax = max([abs(uL)+sqrt(g*hL),abs(uR)+sqrt(g*hR)]); %Toro's approach
     Rusanov = 0.5*( FR + FL + smax*(qL-qR) );
 end
 
