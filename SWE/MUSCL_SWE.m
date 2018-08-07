@@ -33,7 +33,7 @@ flowIC  = 04;   % see details in CommonIC.m
 topoIC  = 00;   % see details in TopographiIC.m
 limiter ='MM';  % MC, MM, VA.
 fluxMth ='HLL'; % LF, RUS, HLL.
-RKmethod='RK3'; % RK2, RK3.
+RKmethod='RK2'; % RK2, RK3.
 plot_fig= true;
 
 % Gravity
@@ -83,7 +83,7 @@ while t<tFinal
             q(:,1)=q(:,2); q(:,nx)=q(:,nx-1); % Neumann BCs
             
             % 2nd stage
-            L=MUSCL_SWEres1d(q,lambda,nx,dx,limiter,fluxMth);	q=(q+qs-dt*L)/2;
+            L=MUSCL_SWEres1d(qs,lambda,nx,dx,limiter,fluxMth);	q=(q+qs-dt*L)/2;
             q(:,1)=q(:,2); q(:,nx)=q(:,nx-1); % Neumann BCs
             
         case 'RK3' % SSP-RK33
