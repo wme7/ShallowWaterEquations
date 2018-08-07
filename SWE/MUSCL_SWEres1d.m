@@ -150,8 +150,9 @@ function Rusanov = RUSflux(qL,qR)
     FR = [hR*uR; hR*uR^2 + g*hR^2/2];
     
     % Rusanov numerical flux
-    smax = max( max(abs(uL+sqrt(g*hL)),abs(uL-sqrt(g*hL))),... 
-                max(abs(uR+sqrt(g*hR)),abs(uR-sqrt(g*hR))) );
+    %smax = max([abs(uL+sqrt(g*hL)),abs(uL-sqrt(g*hL)),... 
+    %            abs(uR+sqrt(g*hR)),abs(uR-sqrt(g*hR))]); %David approach
+	smax = max([abs(uL)+sqrt(g*hL),abs(uR)+sqrt(g*hR)]);
     Rusanov = 0.5*( FR + FL + smax*(qL-qR) );
 end
 
@@ -173,12 +174,8 @@ function HLL = HLLflux(qL,qR)
     FR = [hR*uR; hR*uR^2 + g*hR^2/2];
 
     % Left and right speeds
-    sL = min([0,...
-        qR(2)/qR(1)+sqrt(g*qR(1)),qR(2)/qR(1)-sqrt(g*qR(1)),...
-        qL(2)/qL(1)+sqrt(g*qL(1)),qL(2)/qL(1)-sqrt(g*qL(1))]);
-    sR = max([0,...
-        qR(2)/qR(1)+sqrt(g*qR(1)),qR(2)/qR(1)-sqrt(g*qR(1)),...
-        qL(2)/qL(1)+sqrt(g*qL(1)),qL(2)/qL(1)-sqrt(g*qL(1))]);
+    sL = min([ uR-sqrt(g*hR), uL-sqrt(g*hL) ]);
+    sR = max([ uR+sqrt(g*hR), uL+sqrt(g*hL) ]);
         
     % HLL algorithm
     if 0<sL

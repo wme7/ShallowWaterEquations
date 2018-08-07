@@ -27,7 +27,7 @@ global g
 
 %% Parameters
 CFL     = 0.5;  % CFL number
-tFinal  = 0.12;  % Final time
+tFinal  = 0.12; % Final time
 nE      = 200;  % Number of cells/Elements
 flowIC  = 04;   % see details in CommonIC.m
 topoIC  = 00;   % see details in TopographiIC.m
