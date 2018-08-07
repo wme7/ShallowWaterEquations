@@ -33,6 +33,7 @@ flowIC  = 04;   % see details in CommonIC.m
 topoIC  = 00;   % see details in TopographiIC.m
 limiter ='MM';  % MC, MM, VA.
 fluxMth ='HLL'; % LF, RUS, HLL.
+RKmethod='RK3'; % RK2, RK3.
 plot_fig= true;
 
 % Gravity
@@ -64,7 +65,7 @@ dt0=CFL*dx/lambda0;  % using the system's largest eigenvalue
 %% Solver 
 
 % Load initial condition
-q=q0; it=0; dt=dt0; t=0; lambda=lambda0;
+q=q0; it=0; dt=dt0; t=0; lambda=lambda0; 
 
 while t<tFinal
     % Compute primary properties
@@ -74,21 +75,35 @@ while t<tFinal
     % Update dt
     lambda=max([abs(u+sqrt(g*h)),abs(u-sqrt(g*h))]);
     dt=CFL*dx/lambda; if t+dt>tFinal; dt=tFinal-t; end
+    
+    switch RKmethod
+        case 'RK2' % SSP-RK22
+            % 1st stage
+            L=MUSCL_SWEres1d(q,lambda,nx,dx,limiter,fluxMth);	qs=q-dt*L;
+            q(:,1)=q(:,2); q(:,nx)=q(:,nx-1); % Neumann BCs
+            
+            % 2nd stage
+            L=MUSCL_SWEres1d(q,lambda,nx,dx,limiter,fluxMth);	q=(q+qs-dt*L)/2;
+            q(:,1)=q(:,2); q(:,nx)=q(:,nx-1); % Neumann BCs
+            
+        case 'RK3' % SSP-RK33
+            % Initial step
+            qo = q;
 
-    % RK Initial step
-    qo = q;
+            % 1st stage
+            L=MUSCL_SWEres1d(q,lambda,nx,dx,limiter,fluxMth);	q=qo-dt*L;
+            q(:,1)=q(:,2); q(:,nx)=q(:,nx-1); % Neumann BCs
 
-    % 1st stage
-    L=MUSCL_SWEres1d(q,lambda,nx,dx,limiter,fluxMth);	q=qo-dt*L;
-    q(:,1)=q(:,2); q(:,nx)=q(:,nx-1); % Neumann BCs
+            % 2nd Stage
+            L=MUSCL_SWEres1d(q,lambda,nx,dx,limiter,fluxMth);	q=0.75*qo+0.25*(q-dt*L);
+            q(:,1)=q(:,2); q(:,nx)=q(:,nx-1); % Neumann BCs
 
-    % 2nd Stage
-    L=MUSCL_SWEres1d(q,lambda,nx,dx,limiter,fluxMth);	q=0.75*qo+0.25*(q-dt*L);
-    q(:,1)=q(:,2); q(:,nx)=q(:,nx-1); % Neumann BCs
-
-    % 3rd stage
-    L=MUSCL_SWEres1d(q,lambda,nx,dx,limiter,fluxMth);	q=(qo+2*(q-dt*L))/3;
-    q(:,1)=q(:,2); q(:,nx)=q(:,nx-1); % Neumann BCs
+            % 3rd stage
+            L=MUSCL_SWEres1d(q,lambda,nx,dx,limiter,fluxMth);	q=(qo+2*(q-dt*L))/3;
+            q(:,1)=q(:,2); q(:,nx)=q(:,nx-1); % Neumann BCs
+        otherwise
+            error('RK method not set :P')
+    end
 
     % Update time and iteration counter
     t=t+dt; it=it+1;
