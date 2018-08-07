@@ -26,13 +26,13 @@ clear; %close all; clc;
 global g
 
 %% Parameters
-CFL     = 0.5;	% CFL number
-tFinal	= 0.1;	% Final time
+CFL     = 0.5;  % CFL number
+tFinal  = 0.1;  % Final time
 nE      = 200;  % Number of cells/Elements
-flowIC  = 04;	% see details in CommonIC.m
+flowIC  = 04;   % see details in CommonIC.m
 topoIC  = 00;   % see details in TopographiIC.m
-limiter ='MC';	% MC, MM, VA.
-fluxMth ='HLL';	% LF, RUS, HLL.
+limiter ='MC';  % MC, MM, VA.
+fluxMth ='HLL'; % LF, RUS, HLL.
 plot_fig= true;
 
 % Gravity
