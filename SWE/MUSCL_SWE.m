@@ -29,9 +29,9 @@ global g
 CFL     = 0.5;  % CFL number
 tFinal  = 0.12;  % Final time
 nE      = 200;  % Number of cells/Elements
-flowIC  = 08;   % see details in CommonIC.m
+flowIC  = 04;   % see details in CommonIC.m
 topoIC  = 00;   % see details in TopographiIC.m
-limiter ='VA';  % MC, MM, VA.
+limiter ='MM';  % MC, MM, VA.
 fluxMth ='HLL'; % LF, RUS, HLL.
 plot_fig= true;
 
