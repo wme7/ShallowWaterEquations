@@ -122,7 +122,7 @@ h=q(1,2:nx-1); u=q(2,2:nx-1)./q(1,2:nx-1); b=b(2:nx-1);
 
 % Compute error norms
 err=abs(he(:)-h(:));
-L1=dx*sum(abs(err)); fprintf('L_1 norm: %1.2e \n',L1);
+L1 = dx*sum(abs(err)); fprintf('L_1 norm: %1.2e \n',L1);
 L2 = (dx*sum(err.^2))^0.5; fprintf('L_2 norm: %1.2e \n',L2);
 Linf = norm(err,inf); fprintf('L_inf norm: %1.2e \n',Linf);
 
