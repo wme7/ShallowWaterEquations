@@ -16,7 +16,7 @@ global gate x0; %position of the gate
 %----------------parse initial data----------------
 nIter=50;
 TOL=1E-6;
-nCells=500;
+nCells=numel(x);
 x0 = x(1); % starting point of domain
 ChalLen=x(end)-x(1); %channel lenght
 gate=0.5*(x(end)+x(1)); %gate position

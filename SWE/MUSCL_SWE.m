@@ -28,7 +28,7 @@ global g
 %% Parameters
 CFL     = 0.5;  % CFL number
 tFinal  = 0.12; % Final time
-nE      = 200;  % Number of cells/Elements
+nE      = 400;  % Number of cells/Elements
 flowIC  = 04;   % see details in CommonIC.m
 topoIC  = 00;   % see details in TopographiIC.m
 limiter ='MM';  % MC, MM, VA.
@@ -68,13 +68,8 @@ dt0=CFL*dx/lambda0;  % using the system's largest eigenvalue
 q=q0; it=0; dt=dt0; t=0; lambda=lambda0; 
 
 while t<tFinal
-    % Compute primary properties
-    h=q(1,:); u=q(2,:)./q(1,:); 
-    if min(h)<0; error('negative water height found!'); end
-
-    % Update dt
-    lambda=max([abs(u+sqrt(g*h)),abs(u-sqrt(g*h))]);
-    dt=CFL*dx/lambda; if t+dt>tFinal; dt=tFinal-t; end
+    % update iteration time
+    if t+dt>tFinal; dt=tFinal-t; end; t=t+dt;
     
     switch RKmethod
         case 'RK2' % SSP-RK22
@@ -104,9 +99,15 @@ while t<tFinal
         otherwise
             error('RK method not set :P')
     end
+    % Compute primary properties
+    h=q(1,:); u=q(2,:)./q(1,:); 
+    if min(h)<0; error('negative water height found!'); end
 
-    % Update time and iteration counter
-    t=t+dt; it=it+1;
+    % Compute next time step size
+    lambda=max([abs(u+sqrt(g*h)),abs(u-sqrt(g*h))]); dt=CFL*dx/lambda; 
+
+    % Update iteration counter
+    it=it+1;
 
     % Plot figure
     if plot_fig==true && rem(it,10)==0
@@ -116,17 +117,25 @@ while t<tFinal
     end
 end
 
-%% Final plot
-h=q(1,:); u=q(2,:)./q(1,:);
+%% Post Process
+h=q(1,2:nx-1); u=q(2,2:nx-1)./q(1,2:nx-1); b=b(2:nx-1);
+
+% Compute error norms
+err=abs(he(:)-h(:));
+L1=dx*sum(abs(err)); fprintf('L_1 norm: %1.2e \n',L1);
+L2 = (dx*sum(err.^2))^0.5; fprintf('L_2 norm: %1.2e \n',L2);
+Linf = norm(err,inf); fprintf('L_inf norm: %1.2e \n',Linf);
+
+% Final plot
 if flowIC >= 4 && flowIC <= 8 && topoIC == 0
-    s1=subplot(2,1,1); plot(xc,h0,'--k',xe,he,'-k',xc,h(2:nx-1),'or',xc,b(2:nx-1),'-k'); 
+    s1=subplot(2,1,1); plot(xc,h0,'--k',xe,he,'-k',xc,h,'or',xc,b,'-k'); 
     xlabel('x [m]'); ylabel('h [m]');
-    s2=subplot(2,1,2); plot(xc,u0,'--k',xe,ue,'-k',xc,u(2:nx-1),'ob');
+    s2=subplot(2,1,2); plot(xc,u0,'--k',xe,ue,'-k',xc,u,'ob');
     xlabel('x [m]'); ylabel('u [m/s]');
 else
-    s1=subplot(2,1,1); plot(xc,h0,'--k',xc,h(2:nx-1),'or',xc,b(2:nx-1),'-k');
+    s1=subplot(2,1,1); plot(xc,h0,'--k',xc,h,'or',xc,b,'-k');
     xlabel('x [m]'); ylabel('h [m]');
-    s2=subplot(2,1,2); plot(xc,u0,'--k',xc,u(2:nx-1),'ob');
+    s2=subplot(2,1,2); plot(xc,u0,'--k',xc,u,'ob');
     xlabel('x [m]'); ylabel('u [m/s]');
 end
 title(s1,['SWE Solver: MUSCL-',fluxMth,', t=',num2str(t),'[s]']);
