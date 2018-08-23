@@ -53,12 +53,9 @@ function [res] = MUSCL_SWEres1d(q,smax,N,dx,limiter,fluxMethod)
     for j = 2:N-2 % for all faces the domain cells
         % compute flux at j+1/2
         switch fluxMethod
-            case 'LF' % Lax-Friedrichs
-                flux(:,j) = LFflux(qL(:,j),qR(:,j),smax);
-            case 'RUS' % Rusanov
-                flux(:,j) = RUSflux(qL(:,j),qR(:,j));
-            case 'HLL' % HLL
-                flux(:,j) = HLLflux(qL(:,j),qR(:,j));
+            case 'LF' ,flux(:,j) = LFflux(qL(:,j),qR(:,j),smax); % Lax-Friedrichs
+            case 'RUS',flux(:,j) = RUSflux(qL(:,j),qR(:,j)); % Rusanov
+            case 'HLL',flux(:,j) = HLLflux(qL(:,j),qR(:,j)); % HLL
         end
         res(:, j ) = res(:, j ) + flux(:,j)/dx;
         res(:,j+1) = res(:,j+1) - flux(:,j)/dx;
@@ -68,12 +65,9 @@ function [res] = MUSCL_SWEres1d(q,smax,N,dx,limiter,fluxMethod)
     qR(:,1)=q(:,2)-dq(:,2)*dx/2;    qL(:,1) = qR(:,1);
     % compute: flux(:,1) = AUSMflux(qL(:,1),qR(:,1),gamma);
     switch fluxMethod
-        case 'LF' % Lax-Friedrichs
-            flux(:,1) = LFflux(qL(:,1),qR(:,1),smax);
-        case 'RUS' % Rusanov
-            flux(:,1) = RUSflux(qL(:,1),qR(:,1));
-        case 'HLL' % HLL
-            flux(:,1) = HLLflux(qL(:,1),qR(:,1));
+        case 'LF' ,flux(:,1) = LFflux(qL(:,1),qR(:,1),smax); % Lax-Friedrichs
+        case 'RUS',flux(:,1) = RUSflux(qL(:,1),qR(:,1)); % Rusanov
+        case 'HLL',flux(:,1) = HLLflux(qL(:,1),qR(:,1)); % HLL
     end
     res(:,2) = res(:,2) - flux(:,1)/dx;
 
@@ -81,12 +75,9 @@ function [res] = MUSCL_SWEres1d(q,smax,N,dx,limiter,fluxMethod)
     qL(:,N-1)=q(:,N-1)+dq(:,N-1)*dx/2;      qR(:,N-1) = qL(:,N-1);
     % compute: flux(:,N-1) = Xflux(qL(:,N-1),qR(:,N-1),gamma);
     switch fluxMethod
-        case 'LF' % Lax-Friedrichs
-            flux(:,N-1) = LFflux(qL(:,N-1),qR(:,N-1),smax);
-        case 'RUS' % Rusanov
-            flux(:,N-1) = RUSflux(qL(:,N-1),qR(:,N-1));
-        case 'HLL' % HLL
-            flux(:,N-1) = HLLflux(qL(:,N-1),qR(:,N-1));
+        case 'LF' ,flux(:,N-1) = LFflux(qL(:,N-1),qR(:,N-1),smax); % Lax-Friedrichs
+        case 'RUS',flux(:,N-1) = RUSflux(qL(:,N-1),qR(:,N-1)); % Rusanov
+        case 'HLL',flux(:,N-1) = HLLflux(qL(:,N-1),qR(:,N-1)); % HLL
     end
     res(:,N-1) = res(:,N-1) + flux(:,N-1)/dx;
 end
